@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
+import { FavoriteComponent } from './components/atoms/button/favorite';
 
 export const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
+    path: 'favorite',
+    component: FavoriteComponent,
   },
 ];
