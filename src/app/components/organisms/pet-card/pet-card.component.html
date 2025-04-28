@@ -1,0 +1,17 @@
+<ion-card class="pet-card">
+    <div class="card-content">
+      <app-pet-image
+        [imageUrl]="pet.imageUrl"
+        [isBookmarked]="pet.isBookmarked"
+        (bookmarkChange)="bookmark.emit({ id: pet.id, bookmarked: $event })">
+      </app-pet-image>
+      
+      <app-pet-info
+        [name]="pet.name"
+        [gender]="pet.gender"
+        [breed]="pet.breed"
+        [age]="pet.age"
+        [trait]="pet.trait">
+      </app-pet-info>
+    </div>
+</ion-card>
