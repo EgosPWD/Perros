@@ -1,0 +1,28 @@
+.dogs-container {
+    padding: 8px;
+    
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      
+      .no-results-image {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+      }
+      
+      h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+      }
+      
+      p {
+        font-size: 14px;
+        color: #888;
+      }
+    }
+  }
+  

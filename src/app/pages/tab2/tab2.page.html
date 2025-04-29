@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-title>Encuentra perros</ion-title>
+  </ion-toolbar>
+  <ion-toolbar color="light">
+    <ion-searchbar 
+      [(ngModel)]="searchTerm"
+      (ionInput)="searchDogs()"
+      (ionClear)="clearSearch()"
+      placeholder="Buscar por nombre, raza o características"
+      animated>
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="dogs-container">
+    <ng-container *ngIf="filteredDogs.length > 0; else noResults">
+      <app-dog-card 
+        *ngFor="let dog of filteredDogs" 
+        [dog]="dog">
+      </app-dog-card>
+    </ng-container>
+    
+    <ng-template #noResults>
+      <div class="no-results">
+        <img src="assets/perro.png" alt="No results" class="no-results-image">
+        <h3>No se encontraron perros</h3>
+        <p>Intenta con otros términos de búsqueda</p>
+      </div>
+    </ng-template>
+  </div>
+</ion-content>
