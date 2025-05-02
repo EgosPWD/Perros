@@ -1,20 +1,61 @@
+// src/app/favorites/favorites.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { 
+  IonicModule, 
+  IonContent, 
+  IonHeader, 
+  IonTitle, 
+  IonToolbar,
+  IonList
+} from '@ionic/angular/standalone';
+import { PetService, Pet } from '../services/pet.service';
+import { PetCardComponent } from '../components/organisms/pet-card/pet-card.component';
 
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.page.html',
   styleUrls: ['./favorites.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    CommonModule, 
+    IonicModule, 
+    IonContent, 
+    IonHeader, 
+    IonTitle, 
+    IonToolbar,
+    IonList,
+    PetCardComponent
+  ]
 })
 export class FavoritesPage implements OnInit {
+  favoritePets: Pet[] = [];
 
-  constructor() { }
+  constructor(
+    private petService: PetService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.loadFavorites();
   }
 
+  async loadFavorites() {
+    this.favoritePets = await this.petService.getFavorites();
+  }
+
+  onPetSelected(petId: string) {
+    this.router.navigate(['/tabs/pet', petId]);
+  }
+
+  async onBookmarkChange(event: { id: string; bookmarked: boolean }) {
+    const pet = this.favoritePets.find(p => p.id === event.id);
+    if (pet) {
+      await this.petService.toggleFavorite(pet);
+      this.loadFavorites();
+    }
+  }
 }

@@ -1,13 +1,84 @@
-<ion-header [translucent]="true">
+<!-- src/app/pet-detail/pet-detail.page.html -->
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
-    <ion-title>pet-detail</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" aria-label="Volver">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
+    <ion-title>{{ pet?.name || 'Mascota' }}</ion-title>
+    
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleFavorite()" aria-label="Agregar a favoritos">
+        <ion-icon 
+          slot="icon-only" 
+          [name]="isFavorite ? 'heart' : 'heart-outline'"
+          [color]="isFavorite ? 'danger' : 'medium'">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">pet-detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner></ion-spinner>
+  </div>
+  
+  <div *ngIf="!isLoading && pet" class="pet-detail-container">
+    <!-- Hero Image -->
+    <div class="hero-image">
+      <img [src]="pet.imageUrl || 'assets/placeholder-pet.jpg'" [alt]="pet.name">
+    </div>
+    
+    <!-- Info Badges -->
+    <div class="info-badges">
+      <ion-chip outline>
+        <ion-label>{{ pet.age < 1 ? (pet.age * 12) + ' meses' : pet.age + ' año' + (pet.age > 1 ? 's' : '') }}</ion-label>
+      </ion-chip>
+      
+      <ion-chip outline>
+        <ion-icon [name]="pet.sex === 'male' ? 'male' : 'female'" [color]="pet.sex === 'male' ? 'primary' : 'danger'"></ion-icon>
+        <ion-label>{{ pet.sex === 'male' ? 'Macho' : 'Hembra' }}</ion-label>
+      </ion-chip>
+      
+      <ion-chip outline>
+        <ion-label>{{ pet.weight }}</ion-label>
+      </ion-chip>
+    </div>
+    
+    <!-- About Section -->
+    <div class="about-section">
+      <h2>Acerca de {{ pet.name }}</h2>
+      <p>{{ pet.description }}</p>
+    </div>
+    
+    <!-- Attributes Section -->
+    <div class="attributes-section">
+      <h2>Otros Atributos</h2>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" *ngFor="let attribute of pet.attributes">
+            <div class="attribute-item">
+              <ion-icon [name]="getIconForAttribute(attribute)"></ion-icon>
+              <span>{{ attribute }}</span>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    
+    <!-- Match Button -->
+    <div class="match-button-container">
+      <ion-button expand="block" color="danger" (click)="onMatch()">
+        MATCH
+      </ion-button>
+    </div>
+  </div>
+  
+  <div *ngIf="!isLoading && !pet" class="error-container">
+    <p>No se pudo encontrar la mascota.</p>
+    <ion-button (click)="goBack()">Volver</ion-button>
+  </div>
 </ion-content>
