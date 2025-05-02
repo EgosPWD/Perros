@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
 import { 
-  IonicModule, 
   IonContent, 
   IonHeader, 
   IonTitle, 

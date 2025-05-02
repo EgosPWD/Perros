@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { 
-  IonicModule, 
   IonContent, 
   IonHeader, 
   IonTitle, 
   IonToolbar,
   IonList
 } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
 import { PetService, Pet } from '../services/pet.service';
 import { PetCardComponent } from '../components/organisms/pet-card/pet-card.component';
 

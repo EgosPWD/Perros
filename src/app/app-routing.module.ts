@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./pages/tabs/tabs.routes').then(m => m.routes)
+    loadChildren: () => import('./pages/tabs.routes').then(m => m.routes)
   }
 ];
 

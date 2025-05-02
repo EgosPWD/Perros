@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { Dog } from '../../interfaces/dog.interface';
+import { Dog } from '../../interfaces/pet.interface';
 import { FavoritesService } from '../../services/favorites.service';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';

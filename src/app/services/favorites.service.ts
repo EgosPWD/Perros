@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
-import { Dog } from '../interfaces/dog.interface';
-import { DogService } from './dog.service';
+import { Pet } from '../interfaces/pet.interface';
+import { PetService } from './pet.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
-  private favoritesSubject = new BehaviorSubject<Dog[]>([]);
+  private favoritesSubject = new BehaviorSubject<Pet[]>([]);
   public favorites$ = this.favoritesSubject.asObservable();
   private _storage: Storage | null = null;
   private readonly STORAGE_KEY = 'favorite_dogs';
 
   constructor(
     private storage: Storage, 
-    private dogService: DogService
+    private petService: PetService
   ) {
     this.init();
   }
@@ -27,34 +27,34 @@ export class FavoritesService {
     this.loadFavorites();
   }
 
-  getFavorites(): Observable<Dog[]> {
+  getFavorites(): Observable<Pet[]> {
     return this.favorites$;
   }
 
   async loadFavorites() {
     if (this._storage) {
       const favoriteIds = await this._storage.get(this.STORAGE_KEY) || [];
-      const allDogs = await this.dogService.dogs$.toPromise();
+      const allPets = await this.petService.pets$.toPromise();
       
-      if (allDogs) {
-        const favoriteDogs = allDogs.filter(dog => favoriteIds.includes(dog.id));
+      if (allPets) {
+        const favoriteDogs = allPets.filter(pet => favoriteIds.includes(pet.id));
         this.favoritesSubject.next(favoriteDogs);
       }
     }
   }
 
-  async toggleFavorite(dog: Dog) {
+  async toggleFavorite(pet: Pet) {
     if (!this._storage) return;
     
     const favoriteIds = await this._storage.get(this.STORAGE_KEY) || [];
-    const index = favoriteIds.indexOf(dog.id);
+    const index = favoriteIds.indexOf(pet.id);
     
     if (index > -1) {
       // Eliminar de favoritos
       favoriteIds.splice(index, 1);
     } else {
       // Añadir a favoritos
-      favoriteIds.push(dog.id);
+      favoriteIds.push(pet.id);
     }
     
     await this._storage.set(this.STORAGE_KEY, favoriteIds);
