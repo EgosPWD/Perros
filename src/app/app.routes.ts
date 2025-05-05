@@ -16,6 +16,10 @@ export const routes: Routes = [
         loadComponent: () => import('./home/home.page').then(m => m.HomePage)
       },
       {
+        path: 'aleatorio',
+        loadComponent: () => import('./random/random.page').then(m => m.RandomPage)
+      },
+      {
         path: 'tab3',
         loadComponent: () => import('./favorites/favorites.page').then(m => m.FavoritesPage)
       },

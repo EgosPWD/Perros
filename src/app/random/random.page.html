@@ -1,0 +1,17 @@
+<ion-content [fullscreen]="true" class="ion-padding random-container">
+    <div class="card-container" [class.animate-in]="animateCard">
+      <app-pet-card 
+        *ngIf="randomPet" 
+        [pet]="randomPet"
+        (cardClick)="onPetSelected($event)"
+        (bookmark)="onBookmarkChange($event)">
+      </app-pet-card>
+      
+      <div class="next-container">
+        <ion-button expand="block" shape="round" (click)="getNewRandomPet()" class="next-button">
+          <ion-icon name="shuffle" slot="start"></ion-icon>
+          Siguiente Mascota
+        </ion-button>
+      </div>
+    </div>
+  </ion-content>

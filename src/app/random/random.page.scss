@@ -1,0 +1,41 @@
+.random-container {
+    --background: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .card-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    &.animate-in {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  .next-container {
+    margin-top: 20px;
+    
+    .next-button {
+      --background: var(--ion-color-primary);
+      --background-hover: var(--ion-color-primary-shade);
+      --background-activated: var(--ion-color-primary-shade);
+      --border-radius: 50px;
+      --box-shadow: 0 4px 12px rgba(255, 110, 110, 0.3);
+      font-weight: 600;
+      height: 48px;
+      margin: 0;
+      
+      ion-icon {
+        margin-right: 8px;
+        font-size: 18px;
+      }
+    }
+  }

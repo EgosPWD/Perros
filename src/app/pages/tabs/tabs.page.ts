@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, heart, paw } from 'ionicons/icons';
+import { home, heart, paw, shuffle } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
@@ -14,7 +14,7 @@ import { home, heart, paw } from 'ionicons/icons';
           <ion-label>Inicio</ion-label>
         </ion-tab-button>
         <ion-tab-button tab="aleatorio">
-          <ion-icon name="paw"></ion-icon>
+          <ion-icon name="shuffle"></ion-icon>
           <ion-label>Aleatorio</ion-label>
         </ion-tab-button>
         <ion-tab-button tab="tab3">
@@ -29,6 +29,6 @@ import { home, heart, paw } from 'ionicons/icons';
 })
 export class TabsPage {
   constructor() {
-    addIcons({ home, heart, paw });
+    addIcons({ home, heart, paw, shuffle });
   }
 }

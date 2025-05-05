@@ -43,7 +43,7 @@ export class PetService {
   getById(id: string): Pet | undefined {
     return this.petsSubject.value.find(pet => pet.id === id);
   }
-
+  
   private loadMockPets(): void {
     const mockPets: Pet[] = [
       {
@@ -183,5 +183,11 @@ export class PetService {
     }));
     
     this.petsSubject.next(updatedPets);
+  }
+
+  getRandomPet(): Pet {
+    const pets = this.petsSubject.value;
+    const randomIndex = Math.floor(Math.random() * pets.length);
+    return pets[randomIndex];
   }
 }
