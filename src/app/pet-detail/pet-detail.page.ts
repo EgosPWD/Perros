@@ -2,36 +2,35 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
 import { 
   IonContent, 
   IonHeader, 
   IonTitle, 
   IonToolbar,
-  IonBackButton,
+  IonButton,
   IonButtons,
   IonIcon,
-  IonButton,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonChip,
+  IonLabel,
   NavController
 } from '@ionic/angular/standalone';
-import { PetService, Pet } from '../services/pet.service';
+import { PetService } from '../services/pet.service';
+import { Pet } from '../components/organisms/pet-card/pet-card.component';
 import { addIcons } from 'ionicons';
 import { 
   heart, 
   heartOutline, 
   arrowBack, 
-  male,
-  female,
   paw,
   flash,
   medkit,
   checkmarkCircle,
-  shield,
-  globe
+  shieldCheckmark,
+  globe,
+  ribbon,
+  checkboxOutline,
+  briefcaseOutline,
+  documentTextOutline
 } from 'ionicons/icons';
 
 @Component({
@@ -40,25 +39,20 @@ import {
   styleUrls: ['./pet-detail.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
-    IonicModule,
-    IonContent,
-    IonHeader,
-    IonTitle,
+    CommonModule,
+    IonContent, 
+    IonHeader, 
+    IonTitle, 
     IonToolbar,
-    IonBackButton,
+    IonButton,
     IonButtons,
     IonIcon,
-    IonButton,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonChip
+    IonChip,
+    IonLabel
   ]
 })
 export class PetDetailPage implements OnInit {
   pet?: Pet;
-  isLoading: boolean = true;
   isFavorite: boolean = false;
 
   constructor(
@@ -70,14 +64,16 @@ export class PetDetailPage implements OnInit {
       heart, 
       heartOutline, 
       arrowBack, 
-      male, 
-      female, 
       paw, 
-      flash, 
-      medkit, 
-      checkmarkCircle, 
-      shield, 
-      globe 
+      flash,
+      medkit,
+      checkmarkCircle,
+      shieldCheckmark,
+      globe,
+      ribbon,          // Para razas
+      checkboxOutline, // Para "Entrenado"
+      briefcaseOutline, // Para "Con pasaporte"
+      documentTextOutline // Para otros atributos
     });
   }
 
@@ -86,42 +82,50 @@ export class PetDetailPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.checkFavoriteStatus();
+    this.loadPet();
   }
 
-  private async loadPet() {
-    this.isLoading = true;
-    
-    this.route.paramMap.subscribe(params => {
-      const petId = params.get('id');
-      if (petId) {
-        this.pet = this.petService.getById(petId);
-        this.checkFavoriteStatus();
+  loadPet() {
+    const petId = this.route.snapshot.paramMap.get('id');
+    if (petId) {
+      this.pet = this.petService.getById(petId);
+      if (this.pet) {
+        this.isFavorite = this.pet.isBookmarked;
       }
-      this.isLoading = false;
-    });
-  }
-
-  async checkFavoriteStatus() {
-    if (this.pet) {
-      this.isFavorite = await this.petService.isFavorite(this.pet.id);
     }
   }
 
   getIconForAttribute(attribute: string): string {
     const attr = attribute.toLowerCase();
-    if (attr.includes('energía')) return 'flash';
-    if (attr.includes('pasivo')) return 'paw';
-    if (attr.includes('vacunado')) return 'medkit';
-    if (attr.includes('entrenado')) return 'checkmarkCircle';
-    if (attr.includes('pasaporte')) return 'globe';
-    return 'paw';
+    if (attr.includes('caniche') || attr.includes('bulldog') || attr.includes('basenji') || attr.includes('labrador')) 
+      return 'ribbon';
+    if (attr.includes('energía') || attr.includes('energet')) 
+      return 'flash';
+    if (attr.includes('pasiv') || attr.includes('tranquil')) 
+      return 'paw';
+    if (attr.includes('vacun')) 
+      return 'medkit';
+    if (attr.includes('entrena')) 
+      return 'checkbox-outline';
+    if (attr.includes('pasaporte')) 
+      return 'briefcase-outline';
+    return 'shield-checkmark';
   }
 
   async toggleFavorite() {
     if (this.pet) {
-      await this.petService.toggleFavorite(this.pet);
-      this.isFavorite = await this.petService.isFavorite(this.pet.id);
+      this.isFavorite = !this.isFavorite;
+      await this.petService.toggleFavorite(this.pet.id, this.isFavorite);
+    }
+  }
+
+  formatAge(age: number): string {
+    if (age < 1) {
+      // Redondear los meses para evitar decimales
+      const months = Math.round(age * 12);
+      return `${months} meses`;
+    } else {
+      return `${age} año${age > 1 ? 's' : ''}`;
     }
   }
 
@@ -130,7 +134,6 @@ export class PetDetailPage implements OnInit {
   }
 
   onMatch() {
-    // TODO: Implementar lógica de Match
     console.log('Match con:', this.pet?.name);
   }
 }

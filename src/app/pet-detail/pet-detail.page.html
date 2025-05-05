@@ -1,51 +1,45 @@
-<!-- src/app/pet-detail/pet-detail.page.html -->
-<ion-header [translucent]="true" class="ion-no-border">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="goBack()" aria-label="Volver">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+<ion-content [fullscreen]="true" *ngIf="pet" class="ion-no-padding">
+  <!-- Hero Image with Header -->
+  <div class="hero-section">
+    <img [src]="pet.imageUrl" class="pet-image">
     
-    <ion-title>{{ pet?.name || 'Mascota' }}</ion-title>
-    
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleFavorite()" aria-label="Agregar a favoritos">
+    <!-- Header -->
+    <div class="header-overlay">
+      <ion-buttons>
+        <ion-button (click)="goBack()">
+          <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      
+      <h1 class="pet-name">{{ pet.name }}</h1>
+      
+      <ion-button (click)="toggleFavorite()" fill="clear" class="favorite-button">
         <ion-icon 
-          slot="icon-only" 
           [name]="isFavorite ? 'heart' : 'heart-outline'"
-          [color]="isFavorite ? 'danger' : 'medium'">
+          [color]="isFavorite ? 'danger' : 'light'">
         </ion-icon>
       </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <div *ngIf="isLoading" class="loading-container">
-    <ion-spinner></ion-spinner>
+    </div>
   </div>
   
-  <div *ngIf="!isLoading && pet" class="pet-detail-container">
-    <!-- Hero Image -->
-    <div class="hero-image">
-      <img [src]="pet.imageUrl || 'assets/placeholder-pet.jpg'" [alt]="pet.name">
-    </div>
-    
-    <!-- Info Badges -->
-    <div class="info-badges">
-      <ion-chip outline>
-        <ion-label>{{ pet.age < 1 ? (pet.age * 12) + ' meses' : pet.age + ' año' + (pet.age > 1 ? 's' : '') }}</ion-label>
-      </ion-chip>
+  <!-- Main Content (white background) -->
+  <div class="content-container">
+    <!-- Info Cards -->
+    <div class="info-cards">
+      <div class="info-card age-card">
+        <div class="card-label">Edad</div>
+        <div class="card-value">{{ formatAge(pet.age) }}</div>
+      </div>
       
-      <ion-chip outline>
-        <ion-icon [name]="pet.sex === 'male' ? 'male' : 'female'" [color]="pet.sex === 'male' ? 'primary' : 'danger'"></ion-icon>
-        <ion-label>{{ pet.sex === 'male' ? 'Macho' : 'Hembra' }}</ion-label>
-      </ion-chip>
+      <div class="info-card gender-card">
+        <div class="card-label">Sexo</div>
+        <div class="card-value">{{ pet.gender === 'male' ? 'Macho' : 'Hembra' }}</div>
+      </div>
       
-      <ion-chip outline>
-        <ion-label>{{ pet.weight }}</ion-label>
-      </ion-chip>
+      <div class="info-card weight-card">
+        <div class="card-label">Peso</div>
+        <div class="card-value">{{ pet.weight }}</div>
+      </div>
     </div>
     
     <!-- About Section -->
@@ -57,16 +51,12 @@
     <!-- Attributes Section -->
     <div class="attributes-section">
       <h2>Otros Atributos</h2>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="6" *ngFor="let attribute of pet.attributes">
-            <div class="attribute-item">
-              <ion-icon [name]="getIconForAttribute(attribute)"></ion-icon>
-              <span>{{ attribute }}</span>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <div class="attributes-grid">
+        <div class="attribute-item" *ngFor="let attribute of pet.attributes">
+          <ion-icon [name]="getIconForAttribute(attribute)" color="primary"></ion-icon>
+          <span>{{ attribute }}</span>
+        </div>
+      </div>
     </div>
     
     <!-- Match Button -->
@@ -75,10 +65,5 @@
         MATCH
       </ion-button>
     </div>
-  </div>
-  
-  <div *ngIf="!isLoading && !pet" class="error-container">
-    <p>No se pudo encontrar la mascota.</p>
-    <ion-button (click)="goBack()">Volver</ion-button>
   </div>
 </ion-content>

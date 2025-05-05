@@ -19,36 +19,39 @@
   </div>
   
   <div class="filter-container">
-    <ion-segment
-      [(ngModel)]="selectedCategory"
-      (ionChange)="segmentChanged($event)"
-      scrollable="true"
-      mode="md"
-      value="todos">
-      
-      <ion-segment-button value="todos">
-        <ion-label>Todos</ion-label>
-      </ion-segment-button>
-      
-      <ion-segment-button value="tranquilo">
-        <ion-label>Tranquilo</ion-label>
-      </ion-segment-button>
-      
-      <ion-segment-button value="cachorro">
-        <ion-label>Cachorro</ion-label>
-      </ion-segment-button>
-      
-      <ion-segment-button value="energetico">
-        <ion-label>Enérgico</ion-label>
-      </ion-segment-button>
-    </ion-segment>
+    <div class="filter-tabs">
+      <div 
+        class="filter-tab" 
+        [class.active]="selectedCategory === 'todos'"
+        (click)="selectCategory('todos')">
+        Todos
+      </div>
+      <div 
+        class="filter-tab" 
+        [class.active]="selectedCategory === 'tranquilo'"
+        (click)="selectCategory('tranquilo')">
+        Tranquilo
+      </div>
+      <div 
+        class="filter-tab" 
+        [class.active]="selectedCategory === 'cachorro'"
+        (click)="selectCategory('cachorro')">
+        Cachorro
+      </div>
+      <div 
+        class="filter-tab" 
+        [class.active]="selectedCategory === 'energetico'"
+        (click)="selectCategory('energetico')">
+        Enérgico
+      </div>
+    </div>
   </div>
   
   <div class="pets-container">
     <app-pet-card
       *ngFor="let pet of filteredPets"
       [pet]="pet"
-      (click)="onPetSelected(pet.id)"
+      (cardClick)="onPetSelected($event)"
       (bookmark)="onBookmarkChange($event)">
     </app-pet-card>
     

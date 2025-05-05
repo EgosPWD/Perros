@@ -1,17 +1,27 @@
-<ion-card class="pet-card">
-    <div class="card-content">
-      <app-pet-image
-        [imageUrl]="pet.imageUrl"
-        [isBookmarked]="pet.isBookmarked"
-        (bookmarkChange)="bookmark.emit({ id: pet.id, bookmarked: $event })">
-      </app-pet-image>
-      
-      <app-pet-info
-        [name]="pet.name"
-        [gender]="pet.gender"
-        [breed]="pet.breed"
-        [age]="pet.age"
-        [trait]="pet.trait">
-      </app-pet-info>
+<!-- // src/app/components/organisms/pet-card/pet-card.component.html -->
+<div class="pet-card" (click)="onCardClick()">
+  <div class="card-content">
+    <div class="pet-image">
+      <img [src]="pet.imageUrl" [alt]="pet.name">
+      <div class="bookmark-button" (click)="onBookmarkClick($event)">
+        <ion-icon 
+          [name]="pet.isBookmarked ? 'heart' : 'heart-outline'" 
+          [color]="pet.isBookmarked ? 'danger' : 'medium'">
+        </ion-icon>
+      </div>
     </div>
-</ion-card>
+    <div class="pet-info">
+      <div class="pet-header">
+        <h3>{{ pet.name }}</h3>
+        <ion-icon *ngIf="pet.gender === 'male'" name="male" color="primary"></ion-icon>
+        <ion-icon *ngIf="pet.gender === 'female'" name="female" color="danger"></ion-icon>
+      </div>
+      <p class="pet-breed">{{ pet.breed }}</p>
+      <p class="pet-age">{{ displayAge(pet.age) }}</p>
+      <div class="pet-trait">
+        <ion-icon name="paw"></ion-icon>
+        <span>{{ pet.trait }}</span>
+      </div>
+    </div>
+  </div>
+</div>

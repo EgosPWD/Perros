@@ -7,11 +7,12 @@ import {
   IonHeader, 
   IonTitle, 
   IonToolbar,
-  IonList
+  IonList,
+  IonIcon
 } from '@ionic/angular/standalone';
 import { IonicModule } from '@ionic/angular';
-import { PetService, Pet } from '../services/pet.service';
-import { PetCardComponent } from '../components/organisms/pet-card/pet-card.component';
+import { PetService } from '../services/pet.service';
+import { PetCardComponent, Pet } from '../components/organisms/pet-card/pet-card.component';
 
 @Component({
   selector: 'app-favorites',
@@ -26,6 +27,7 @@ import { PetCardComponent } from '../components/organisms/pet-card/pet-card.comp
     IonTitle, 
     IonToolbar,
     IonList,
+    IonIcon,
     PetCardComponent
   ]
 })
@@ -48,13 +50,13 @@ export class FavoritesPage implements OnInit {
   }
 
   onPetSelected(petId: string) {
-    this.router.navigate(['/tabs/pet', petId]);
+    this.router.navigate(['/pet-detail', petId]);
   }
 
   async onBookmarkChange(event: { id: string; bookmarked: boolean }) {
     const pet = this.favoritePets.find(p => p.id === event.id);
     if (pet) {
-      await this.petService.toggleFavorite(pet);
+      await this.petService.toggleFavorite(event.id, event.bookmarked);
       this.loadFavorites();
     }
   }

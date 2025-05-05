@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { 
   IonContent, 
   IonHeader, 
@@ -13,14 +12,15 @@ import {
   IonSegment,
   IonSegmentButton,
   IonLabel,
+  IonIcon,
   IonCard,
-  IonList,
-  IonItem
+  IonItem,
+  IonList
 } from '@ionic/angular/standalone';
-import { PetService, Pet } from '../services/pet.service';
-import { PetCardComponent } from '../components/organisms/pet-card/pet-card.component';
+import { PetService } from '../services/pet.service';
+import { PetCardComponent, Pet } from '../components/organisms/pet-card/pet-card.component';
 import { addIcons } from 'ionicons';
-import { heart, heartOutline, search } from 'ionicons/icons';
+import { heart, heartOutline, search, home, paw, female, male, flashOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
@@ -29,19 +29,19 @@ import { heart, heartOutline, search } from 'ionicons/icons';
   standalone: true,
   imports: [
     CommonModule, 
-    IonicModule, 
     FormsModule,
-    IonContent,
-    IonHeader,
-    IonTitle,
+    IonContent, 
+    IonHeader, 
+    IonTitle, 
     IonToolbar,
     IonSearchbar,
     IonSegment,
     IonSegmentButton,
     IonLabel,
+    IonIcon,
     IonCard,
-    IonList,
     IonItem,
+    IonList,
     PetCardComponent
   ]
 })
@@ -55,44 +55,76 @@ export class HomePage implements OnInit {
     private petService: PetService,
     private router: Router
   ) {
-    addIcons({ heart, heartOutline, search });
+    addIcons({ 
+      heart, 
+      heartOutline, 
+      search, 
+      home, 
+      paw, 
+      female, 
+      male, 
+      flashOutline 
+    });
   }
 
   ngOnInit() {
-    this.petService.pets$.subscribe(pets => {
+    this.loadPets();
+  }
+
+  ionViewWillEnter() {
+    this.loadPets();
+  }
+
+  loadPets() {
+    this.petService.getAllPets().subscribe(pets => {
+      console.log('Mascotas cargadas:', pets);
       this.pets = pets;
       this.applyFilters();
     });
   }
 
   applyFilters() {
+    console.log('Aplicando filtros, mascotas totales:', this.pets.length);
     let result = this.pets;
     
-    // Apply search filter
+    // Aplicar filtro de búsqueda
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       result = result.filter(pet => 
         pet.name.toLowerCase().includes(term) || 
-        pet.breed.toLowerCase().includes(term)
+        pet.breed.toLowerCase().includes(term) ||
+        (pet.trait && pet.trait.toLowerCase().includes(term))
       );
     }
     
-    // Apply category filter
+    // Aplicar filtro de categoría
     if (this.selectedCategory !== 'todos') {
       if (this.selectedCategory === 'tranquilo') {
-        result = result.filter(pet => pet.energyLevel === 'low');
+        result = result.filter(pet => 
+          pet.trait && pet.trait.toLowerCase().includes('tranquil'));
       } else if (this.selectedCategory === 'cachorro') {
         result = result.filter(pet => pet.age < 1);
       } else if (this.selectedCategory === 'energetico') {
-        result = result.filter(pet => pet.energyLevel === 'high');
+        result = result.filter(pet => 
+          pet.trait && (
+            pet.trait.toLowerCase().includes('energét') || 
+            pet.trait.toLowerCase().includes('energic')
+          )
+        );
       }
     }
     
     this.filteredPets = result;
+    console.log('Mascotas filtradas:', this.filteredPets.length);
   }
 
   segmentChanged(event: any) {
     this.selectedCategory = event.detail.value;
+    this.applyFilters();
+  }
+
+  selectCategory(category: string) {
+    this.selectedCategory = category;
     this.applyFilters();
   }
 
@@ -102,13 +134,10 @@ export class HomePage implements OnInit {
   }
 
   onPetSelected(petId: string) {
-    this.router.navigate(['/tabs/pet', petId]);
+    this.router.navigate(['/pet-detail', petId]);
   }
 
   onBookmarkChange(event: { id: string; bookmarked: boolean }) {
-    const pet = this.pets.find(p => p.id === event.id);
-    if (pet) {
-      this.petService.toggleFavorite(pet);
-    }
+    this.petService.toggleFavorite(event.id, event.bookmarked);
   }
 }
