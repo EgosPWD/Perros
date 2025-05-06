@@ -10,7 +10,6 @@ import {
   IonList,
   IonIcon
 } from '@ionic/angular/standalone';
-import { IonicModule } from '@ionic/angular';
 import { PetService } from '../services/pet.service';
 import { PetCardComponent, Pet } from '../components/organisms/pet-card/pet-card.component';
 
@@ -21,7 +20,6 @@ import { PetCardComponent, Pet } from '../components/organisms/pet-card/pet-card
   standalone: true,
   imports: [
     CommonModule, 
-    IonicModule, 
     IonContent, 
     IonHeader, 
     IonTitle, 
@@ -46,7 +44,12 @@ export class FavoritesPage implements OnInit {
   }
 
   async loadFavorites() {
-    this.favoritePets = await this.petService.getFavorites();
+    try {
+      this.favoritePets = await this.petService.getFavorites();
+    } catch (error) {
+      console.error('Error al cargar Favoritos', error);
+      this.favoritePets = [];
+    }
   }
 
   onPetSelected(petId: string) {

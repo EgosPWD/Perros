@@ -9,18 +9,22 @@ import { home, heart, paw, shuffle } from 'ionicons/icons';
   template: `
     <ion-tabs>
       <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="tab1">
+
+        <ion-tab-button tab="home">
           <ion-icon name="home"></ion-icon>
           <ion-label>Inicio</ion-label>
         </ion-tab-button>
-        <ion-tab-button tab="aleatorio">
+
+        <ion-tab-button tab="random">
           <ion-icon name="shuffle"></ion-icon>
           <ion-label>Aleatorio</ion-label>
         </ion-tab-button>
-        <ion-tab-button tab="tab3">
+        
+        <ion-tab-button tab="favorites">
           <ion-icon name="heart"></ion-icon>
           <ion-label>Favoritos</ion-label>
         </ion-tab-button>
+        
       </ion-tab-bar>
     </ion-tabs>
   `,

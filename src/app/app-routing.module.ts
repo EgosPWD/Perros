@@ -1,13 +1,8 @@
 // src/app/app-routing.module.ts
-import { NgModule } from '@angular/core';
+/*import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: '/tabs/tab1',
-    pathMatch: 'full'
-  },
   {
     path: 'tabs',
     loadChildren: () => import('./pages/tabs.routes').then(m => m.routes)
@@ -20,4 +15,11 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { }*/
+
+
+
+
+
+
+//Recomendable su eliminación, debido a que todo esta centralizado en app.routes.ts
