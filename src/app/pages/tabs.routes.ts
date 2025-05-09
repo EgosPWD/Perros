@@ -1,5 +1,5 @@
 // src/app/pages/tabs/tabs.routes.ts
-import { Routes } from '@angular/router';
+/*import { Routes } from '@angular/router';
 import { TabsPage } from './tabs/tabs.page';
 
 export const routes: Routes = [
@@ -8,15 +8,15 @@ export const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'home',
         loadComponent: () => import('../home/home.page').then(m => m.HomePage)
       },
       {
-        path: 'tab2',
-        loadComponent: () => import('../pet-detail/pet-detail.page').then(m => m.PetDetailPage)
+        path: 'random',
+        loadComponent: () => import('../random/random.page').then(m => m.RandomPage)
       },
       {
-        path: 'tab3',
+        path: 'favorites',
         loadComponent: () => import('../favorites/favorites.page').then(m => m.FavoritesPage)
       },
       {
@@ -29,10 +29,11 @@ export const routes: Routes = [
         pathMatch: 'full'
       }
     ]
-  },
-  {
-    path: '',
-    redirectTo: '/tabs/tab1',
-    pathMatch: 'full'
   }
-];
+];*/
+
+
+
+
+
+//Recomendable su eliminación, debido a que todo esta centralizado en app.routes.ts
